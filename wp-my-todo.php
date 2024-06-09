@@ -1,7 +1,5 @@
 <?php
-if( !defined( constant_name: 'ABSPATH')){
-    die(' You are not allowed to call this page directly');
-}
+defined('ABSPATH') or die;
 
 /*
  * Plugin Name:       Wp My Todo
@@ -26,8 +24,8 @@ if( !defined( constant_name: 'ABSPATH')){
     );
 
 function my_todo_active_pluginprefix(){
-    var_dump('activate');
-    // add_action('wp_todo_plugin_activated', 'hello');
+    // var_dump('activate');
+    do_action('wp_todo_plugin_activated', 'hello');
 }
 register_deactivation_hook(
     __FILE__,
@@ -50,7 +48,15 @@ function wp_todo_plugin_register_uninstall(){
     //exit();
 }
 
-//=========================Action Hoke===========================
+add_action('wp_todo_plugin_activated', 'wp_todo_plugin_create_table', 10, 2);
+function wp_todo_plugin_create_table($data)
+{
+    // error_log('table created');
+    // error_log($data);
+    // exit();
+}
+
+//=========================Action Hoke================================================
 add_action('save_post', 'wp_todo_plugin_our_custom_action_to_update_post');
 
 function wp_todo_plugin_our_custom_action_to_update_post(){
@@ -58,13 +64,6 @@ function wp_todo_plugin_our_custom_action_to_update_post(){
     // exit();
 }
 
-add_action('wp_todo_plugin_activated', 'wp_todo_plugin_create_table', 10, 2);
-
-function wp_todo_plugin_create_table($data){
-    // var_dump('table created');
-    // var_dump($data);
-    // exit();
-}
 
 add_action('save_post', function ($postId, $post){
     // var_dump('first');
@@ -75,7 +74,7 @@ add_action('save_post', function ($postId, $post) {
 },10, 2);
 
 
-//===========================filter Hoke=======================
+//===========================filter Hoke=============================================================
 
 // add_filter('the_title', function($title) {
 //     return 'Clean Code With Puja '. $title;
@@ -102,13 +101,28 @@ function wp_todo_plugin_filter_hook_test_2($data, $name){
 remove_filter('wp_todo_plugin_our_custom_hook_name' , 'wp_todo_plugin_filter_hook_test_2', 10);
 
 wp_todo_plugin_filter_hook_test();
-exit();
+// exit();
 
 
+//===================================Add a Top-Level Menu=================================================
 
+add_action('admin_menu', 'wp_todo_plugin_menu');
 
+function wp_todo_plugin_menu()
+{
+    add_menu_page(
+       'Wp Todo Plugin', // Page title
+        'Todos',          // Menu title
+        'manage_options', // Capability
+        'wp-todo-plugin', // Menu slug
+        'wp_todo_plugin_page', // Function to display the page content
+        'dashicons-list-view',               // Icon URL (optional)
+        10               // Position (optional)
+    );
+}
 
-?>
-
+function wp_todo_plugin_page(){
+    echo ('Hello world');
+}
 
 
