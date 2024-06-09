@@ -36,8 +36,8 @@ register_deactivation_hook(
 
 function my_todo_deactivation_pluginprefix()
 {
-    var_dump('deactivation');
-    exit();
+    // var_dump('deactivation');
+    // exit();
 }
 
 register_uninstall_hook(
@@ -58,15 +58,51 @@ function wp_todo_plugin_our_custom_action_to_update_post(){
     // exit();
 }
 
-add_action('wp_todo_plugin_activated', 'wp_todo_plugin_create_table');
+add_action('wp_todo_plugin_activated', 'wp_todo_plugin_create_table', 10, 2);
 
 function wp_todo_plugin_create_table($data){
-    var_dump('table created');
-    var_dump($data);
-    exit();
+    // var_dump('table created');
+    // var_dump($data);
+    // exit();
 }
 
+add_action('save_post', function ($postId, $post){
+    // var_dump('first');
+}, 15, 2);
 
+add_action('save_post', function ($postId, $post) {
+    // var_dump('secound');
+},10, 2);
+
+
+//===========================filter Hoke=======================
+
+// add_filter('the_title', function($title) {
+//     return 'Clean Code With Puja '. $title;
+// } ,10 , 1);
+
+function wp_todo_plugin_filter_hook_test(){
+    $data = 'Hello World';
+    $data = apply_filters('wp_todo_plugin_our_custom_hook_name', $data, 'Puja');
+    echo $data;
+}
+
+// add_filter('wp_todo_plugin_our_custom_hook_name', function ($data, $name) {
+//   return 'modify data ' . $name;
+// } ,10 , 2);
+
+add_filter('wp_todo_plugin_our_custom_hook_name', 'wp_todo_plugin_filter_hook_test_2', 10, 2);
+
+function wp_todo_plugin_filter_hook_test_2($data, $name){
+    $data = 'modified data ' . $name;
+    return $data;
+
+};
+
+remove_filter('wp_todo_plugin_our_custom_hook_name' , 'wp_todo_plugin_filter_hook_test_2', 10);
+
+wp_todo_plugin_filter_hook_test();
+exit();
 
 
 
