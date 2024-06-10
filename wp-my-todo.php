@@ -387,3 +387,85 @@ function wporg_options_page_html()
     </div>
 <?php
 }
+
+
+//===================================================Custom Post Types==============================================================
+add_action('init', 'wp_todo_post_type');
+
+
+// Register Custom Post Type Wp Todo
+function wp_todo_post_type()
+{
+
+    $labels = array(
+        'name' => _x('Wp Todos', 'Post Type General Name', 'wp-my-todo'),
+        'singular_name' => _x('Wp Todo', 'Post Type Singular Name', 'wp-my-todo'),
+        'menu_name' => _x('Wp Todos', 'Admin Menu text', 'wp-my-todo'),
+        'name_admin_bar' => _x('Wp Todo', 'Add New on Toolbar', 'wp-my-todo'),
+        'archives' => __('Wp Todo Archives', 'wp-my-todo'),
+        'attributes' => __('Wp Todo Attributes', 'wp-my-todo'),
+        'parent_item_colon' => __('Parent Wp Todo:', 'wp-my-todo'),
+        'all_items' => __('All Wp Todos', 'wp-my-todo'),
+        'add_new_item' => __('Add New Wp Todo', 'wp-my-todo'),
+        'add_new' => __('Add New', 'wp-my-todo'),
+        'new_item' => __('New Wp Todo', 'wp-my-todo'),
+        'edit_item' => __('Edit Wp Todo', 'wp-my-todo'),
+        'update_item' => __('Update Wp Todo', 'wp-my-todo'),
+        'view_item' => __('View Wp Todo', 'wp-my-todo'),
+        'view_items' => __('View Wp Todos', 'wp-my-todo'),
+        'search_items' => __('Search Wp Todo', 'wp-my-todo'),
+        'not_found' => __('Not found', 'wp-my-todo'),
+        'not_found_in_trash' => __('Not found in Trash', 'wp-my-todo'),
+        'featured_image' => __('Featured Image', 'wp-my-todo'),
+        'set_featured_image' => __('Set featured image', 'wp-my-todo'),
+        'remove_featured_image' => __('Remove featured image', 'wp-my-todo'),
+        'use_featured_image' => __('Use as featured image', 'wp-my-todo'),
+        'insert_into_item' => __('Insert into Wp Todo', 'wp-my-todo'),
+        'uploaded_to_this_item' => __('Uploaded to this Wp Todo', 'wp-my-todo'),
+        'items_list' => __('Wp Todos list', 'wp-my-todo'),
+        'items_list_navigation' => __('Wp Todos list navigation', 'wp-my-todo'),
+        'filter_items_list' => __('Filter Wp Todos list', 'wp-my-todo'),
+    );
+    $args = array(
+        'label' => __('Wp Todo', 'wp-my-todo'),
+        'description' => __('', 'wp-my-todo'),
+        'labels' => $labels,
+        'menu_icon' => 'dashicons-list-view',
+        'supports' => array('title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'author', 'comments', 'trackbacks', 'page-attributes', 'post-formats', 'custom-fields'),
+        'taxonomies' => array(),
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_position' => 5,
+        'show_in_admin_bar' => true,
+        'show_in_nav_menus' => true,
+        'can_export' => true,
+        'has_archive' => true,
+        'hierarchical' => false,
+        'exclude_from_search' => false,
+        'show_in_rest' => true,
+        'publicly_queryable' => true,
+        'capability_type' => 'post',
+    );
+    register_post_type('wp-todo-plugin', $args);
+}
+
+
+add_action('init', function () {
+    $args = array(
+        'post_type'      => 'wp-todo-plugin',
+        'posts_per_page' => 10,
+    );
+    $loop = new WP_Query($args);
+    while ( $loop->have_posts() ) {
+        $loop->the_post();
+        ?>
+        <div class="entry-content">
+            <?php the_title(); ?>
+            <?php the_content(); ?>
+        </div>
+        <?php
+    }
+    exit();
+});
+
