@@ -17,13 +17,14 @@ defined('ABSPATH') or die;
  * Domain Path:       /languages
  */
 
- 
- register_activation_hook(
-    __FILE__ ,
-     'my_todo_active_pluginprefix'
-    );
 
-function my_todo_active_pluginprefix(){
+register_activation_hook(
+    __FILE__,
+    'my_todo_active_pluginprefix'
+);
+
+function my_todo_active_pluginprefix()
+{
     // var_dump('activate');
     do_action('wp_todo_plugin_activated', 'hello');
 }
@@ -43,7 +44,8 @@ register_uninstall_hook(
     'wp_todo_plugin_register_uninstall'
 );
 
-function wp_todo_plugin_register_uninstall(){
+function wp_todo_plugin_register_uninstall()
+{
     //var_dump('uninstall');
     //exit();
 }
@@ -59,19 +61,20 @@ function wp_todo_plugin_create_table($data)
 //=========================Action Hoke================================================
 add_action('save_post', 'wp_todo_plugin_our_custom_action_to_update_post');
 
-function wp_todo_plugin_our_custom_action_to_update_post(){
+function wp_todo_plugin_our_custom_action_to_update_post()
+{
     // return('save_post');
     // exit();
 }
 
 
-add_action('save_post', function ($postId, $post){
+add_action('save_post', function ($postId, $post) {
     // var_dump('first');
 }, 15, 2);
 
 add_action('save_post', function ($postId, $post) {
     // var_dump('secound');
-},10, 2);
+}, 10, 2);
 
 
 //===========================filter Hoke=============================================================
@@ -80,7 +83,8 @@ add_action('save_post', function ($postId, $post) {
 //     return 'Clean Code With Puja '. $title;
 // } ,10 , 1);
 
-function wp_todo_plugin_filter_hook_test(){
+function wp_todo_plugin_filter_hook_test()
+{
     // $data = 'Hello World';
     // $data = apply_filters('wp_todo_plugin_our_custom_hook_name', $data, 'Puja');
     // echo $data;
@@ -92,13 +96,14 @@ function wp_todo_plugin_filter_hook_test(){
 
 add_filter('wp_todo_plugin_our_custom_hook_name', 'wp_todo_plugin_filter_hook_test_2', 10, 2);
 
-function wp_todo_plugin_filter_hook_test_2($data, $name){
+function wp_todo_plugin_filter_hook_test_2($data, $name)
+{
     // $data = 'modified data ' . $name;
     // return $data;
 
 };
 
-remove_filter('wp_todo_plugin_our_custom_hook_name' , 'wp_todo_plugin_filter_hook_test_2', 10);
+remove_filter('wp_todo_plugin_our_custom_hook_name', 'wp_todo_plugin_filter_hook_test_2', 10);
 
 wp_todo_plugin_filter_hook_test();
 // exit();
@@ -111,7 +116,7 @@ add_action('admin_menu', 'wp_todo_plugin_menu');
 function wp_todo_plugin_menu()
 {
     add_menu_page(
-       'Wp Todo Plugin', // Page title
+        'Wp Todo Plugin', // Page title
         'Todos',          // Menu title
         'manage_options', // Capability
         'wp-todo-plugin', // Menu slug
@@ -129,30 +134,34 @@ function wp_todo_plugin_menu()
         'wp_todo_plugin_submenu'  // Function to display the page content
     );
     add_users_page(
-        __('My Plugin Users','textdomain'),
-        __('My Plugin','textdomain'),
+        __('My Plugin Users', 'textdomain'),
+        __('My Plugin', 'textdomain'),
         'manage_options',
         'my-unique-identifier',
         'my_plugin_function'
     );
 }
 
-function wp_todo_plugin_page(){
+function wp_todo_plugin_page()
+{
     echo '<h1> Hello world  </h1>';
 }
 
-function wp_todo_plugin_submenu(){
+function wp_todo_plugin_submenu()
+{
     echo '<h1> Add New Todo </h1>';
 }
 
-function my_plugin_function(){
+function my_plugin_function()
+{
     echo 'my plugin user';
 }
 //=======================Add a Shortcode===============================================
 
 add_shortcode('wp-todo-plugin', 'wp_todo_plugin_shortcode');
 
-function wp_todo_plugin_shortcode($atts = [], $content = null){
+function wp_todo_plugin_shortcode($atts = [], $content = null)
+{
     // $content .= '<h1>Hello world</h1>';
     $atts = shortcode_atts(
         array(
@@ -160,11 +169,33 @@ function wp_todo_plugin_shortcode($atts = [], $content = null){
             'height' => '50',
             'url' => 'https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg',
         ),
-        $atts, 'wp-todo-plugin'
+        $atts,
+        'wp-todo-plugin'
     );
-    $width = $atts['width'].'px';
-    $height = $atts['height'].'px';
+    $width = $atts['width'] . 'px';
+    $height = $atts['height'] . 'px';
     $url = $atts['url'];
-    $content = '<img src="' .$url .'" width =" ' . $height .'" height=" ' . $height .' ">';
+    $content = '<img src="' . $url . '" width =" ' . $height . '" height=" ' . $height . ' ">';
     return  $content;
+}
+
+
+//=====================================Settings api==================================================================
+
+add_action('admin_init', function () {
+    register_setting('writing', 'wp_todo_plugin_post_site_key');
+
+    add_settings_section(
+        'wp_todo_settings_section_writing',
+        'WPOrg Setting Section',
+        'wp_todo_plugin_setting_section_writing',
+        'writing',
+    );
+});
+function wp_todo_plugin_setting_section_writing()
+{
+    $site_key = get_option('wp_todo_plugin_post_site_key');
+?>
+    <input type="text" name="wp_todo_plugin_post_site_key" value="<?php echo $site_key; ?>"  >
+<?php
 }
