@@ -466,6 +466,80 @@ add_action('init', function () {
         </div>
         <?php
     }
-    exit();
+
 });
+
+//=======================================================Taxonomies=====================================================================
+
+
+function wp_todo_register_taxonomy_course()
+{
+    $labels = array(
+        'name'              => __('Courses'),
+        'singular_name'     => __('Course'),
+        'search_items'      => __('Search Courses'),
+        'all_items'         => __('All Courses'),
+        'parent_item'       => __('Parent Course'),
+        'parent_item_colon' => __('Parent Course:'),
+        'edit_item'         => __('Edit Course'),
+        'update_item'       => __('Update Course'),
+        'add_new_item'      => __('Add New Course'),
+        'new_item_name'     => __('New Course Name'),
+        'menu_name'         => __('Course'),
+    );
+    $args   = array(
+        'hierarchical'      => true, // make it hierarchical (like categories)
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => ['slug' => 'course'],
+        'show_in_rest'      => true,
+    );
+    register_taxonomy('course', ['post'], $args);
+}
+add_action('init', 'wp_todo_register_taxonomy_course');
+
+//================================================User Metadata================================================================
+
+add_action('init', function() {
+    //     // echo '<pre></pre>';
+    //     // print_r(wp_roles());
+    //     // exit();
+
+    //    $user = wp_create_user('chadni', 'password', 'cahdnitalukder2@gmail.com');
+
+    // var_dump(wp_get_current_user());
+    // $update_user = wp_update_user([
+    //     'ID' => 2,
+    //     'user_url' => 'https://chadnitalukder2.com'
+    // ]);
+    //    var_dump($user);
+    //    exit();
+
+    // add_user_meta(
+    //     '2',
+    //     'wp_todo_key',
+    //     'wp_todo_value',
+    // );
+
+    update_user_meta(
+        '2',
+        'wp_todo_key',
+        'wp_todo_value update',
+    );
+
+   $data = get_user_meta(
+        '2',
+        'wp_todo_key',
+    );
+    var_dump($data);
+exit();
+});
+
+
+
+
+
+
 
