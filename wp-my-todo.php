@@ -503,12 +503,13 @@ add_action('init', 'wp_todo_register_taxonomy_course');
 //================================================User Metadata================================================================
 
 add_action('init', function() {
+    //======================================================================================
     //     // echo '<pre></pre>';
     //     // print_r(wp_roles());
     //     // exit();
-
+    //======================================================================================
     //    $user = wp_create_user('chadni', 'password', 'cahdnitalukder2@gmail.com');
-
+    //======================================================================================
     // var_dump(wp_get_current_user());
     // $update_user = wp_update_user([
     //     'ID' => 2,
@@ -516,26 +517,62 @@ add_action('init', function() {
     // ]);
     //    var_dump($user);
     //    exit();
-
+    //======================================================================================
     // add_user_meta(
     //     '2',
     //     'wp_todo_key',
     //     'wp_todo_value',
     // );
+    //======================================================================================
+    // update_user_meta(
+    //     '2',
+    //     'wp_todo_key',
+    //     'wp_todo_value update',
+    // );
+    //======================================================================================
+    //    $data = get_user_meta(
+    //         '2',
+    //         'wp_todo_key',
+    //     );
+    //   var_dump($data);
+    //======================================================================================
+    // echo "<pre>";
+    // print_r(get_role('administrator'));
+    // exit();
+    //======================================================================================
+    // add_role(
+    //     'simple_role',
+    //     'Simple Role',
+    //     array(
+    //         'read'         => true,
+    //         'edit_posts'   => true,
+    //         'upload_files' => true,
+    //     ),
+    // );
+    //======================================================================================
+    // $role = get_role('simple_role');
+    // var_dump($role);
+    // $role->add_cap('wp_todo_test', 1);
+    // echo '<pre>';
+    // print_r($role);
+    // exit();
+    //==================================================================================================
+    // function wp_todo_user_permission_check()
+    // {
+    //     if (current_user_can('read')) {
+    //         echo "permitted";
+    //     } else {
+    //         echo "not permitted";
+    //     }
+    // }
 
-    update_user_meta(
-        '2',
-        'wp_todo_key',
-        'wp_todo_value update',
-    );
+    // wp_todo_user_permission_check();
+    // exit();
 
-   $data = get_user_meta(
-        '2',
-        'wp_todo_key',
-    );
-    var_dump($data);
-exit();
 });
+//====================================================================================================
+
+
 
 
 
