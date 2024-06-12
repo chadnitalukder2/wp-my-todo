@@ -66,6 +66,7 @@ add_action('wp_ajax_wp_todo_abc_again', function () {
     //var_dump( $_POST);
     wp_send_json_success(array(
         'message' => 'success again',
+        'data'    => $_POST,
         'response'    => [
             'cars' => ['Volvo', 'BMW', 'Toyota']
         ],

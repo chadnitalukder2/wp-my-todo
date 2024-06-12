@@ -17,7 +17,8 @@ jQuery
 //==========================================================
 jQuery
   .post(wp_todo_plugin.ajax_url, {
-    action: "wp_todo_abc_again",
+      action: "wp_todo_abc_again",
+      name: ['apple', 'orange', 'mango']
   })
   .then((res) => {
     console.log(res);
