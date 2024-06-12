@@ -17,6 +17,7 @@ defined('ABSPATH') or die;
  * Domain Path:       /languages
  */
 
+ //===========================Enqueue Custom CSS and JS in WP Plugin Development===================================
  define('WP_TODO_PLUGIN_VERSION', '1.0.0');
 define('WP_TODO_PLUGIN_FILE', __FILE__);
 define('WP_TODO_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -45,5 +46,28 @@ add_action('admin_enqueue_scripts', function(){
         )
     );
 });
+//====================================AJAX Request========================================================
+add_action ('wp_ajax_wp_todo_abc', function(){
+//var_dump( $_POST);
+if(wp_verify_nonce($_REQUEST['nonce'], 'wp-todo-plugin-nonce') === false){
+        wp_send_json_error(array(
+            'message' => 'nonce is not valid',
+        ));
+}
+        wp_send_json_success(array(
+            'message' => 'success',
+            'data'    => $_POST,
+        ));
 
+});
 
+//Frontend ajax   ============** nopriv  **=============
+add_action('wp_ajax_wp_todo_abc_again', function () {
+    //var_dump( $_POST);
+    wp_send_json_success(array(
+        'message' => 'success again',
+        'response'    => [
+            'cars' => ['Volvo', 'BMW', 'Toyota']
+        ],
+    ));
+});
